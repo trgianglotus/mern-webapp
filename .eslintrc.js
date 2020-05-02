@@ -7,22 +7,17 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended",
-  ],
+  extends: ["eslint:recommended", "plugin:react/recommended"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
     },
     sourceType: "module",
   },
-  plugins: ["react"],
+  plugins: ["react", "prettier"],
   rules: {
     indent: ["error", 2, { SwitchCase: 1 }],
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "single"],
     semi: ["error", "always"],
     "no-console": [
       "warn",
