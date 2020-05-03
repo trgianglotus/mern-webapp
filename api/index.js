@@ -3,7 +3,11 @@ import { MongoClient } from "mongodb";
 import assert from "assert";
 import config from "../config";
 
-const client = new MongoClient(config.mongodbUri);
+const client = new MongoClient(config.mongodbUri, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useCreateIndex: true,
+});
 
 let mdb;
 client.connect((err) => {
@@ -27,13 +31,11 @@ router.get("/contests", (req, res) => {
     })
     .each((err, contest) => {
       assert.equal(null, err);
-
       if (!contest) {
         // no more contests
         res.send({ contests });
         return;
       }
-
       contests[contest.id] = contest;
     });
 });
@@ -44,6 +46,24 @@ router.get("/contests/:contestId", (req, res) => {
     .findOne({ id: Number(req.params.contestId) })
     .then((contest) => res.send(contest))
     .catch(console.error);
+});
+
+router.get("/names/:nameIds", (req, res) => {
+  const nameIds = req.params.nameIds.split(",").map(Number);
+  let names = {};
+  mdb
+    .collection("names")
+    .find({ id: { $in: nameIds } })
+    .each((err, name) => {
+      assert.equal(null, err);
+
+      if (!name) {
+        res.send({ names });
+        return;
+      }
+
+      names[name.id] = name;
+    });
 });
 
 export default router;
