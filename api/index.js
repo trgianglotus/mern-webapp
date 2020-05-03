@@ -5,8 +5,6 @@ import config from "../config";
 
 const client = new MongoClient(config.mongodbUri, {
   useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true,
 });
 
 let mdb;
